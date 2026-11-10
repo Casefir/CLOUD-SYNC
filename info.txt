@@ -1,0 +1,1112 @@
+ANUBIS CLOUD SYNC
+
+MASTER SOFTWARE ENGINEERING AND IMPLEMENTATION SPECIFICATION
+
+Project: Anubis Client for Minecraft Java Edition
+
+Component: Anubis Cloud Infrastructure
+
+Development Priority: Production Quality
+
+Implementation Mode: Full Codebase Integration
+
+⸻
+
+0. ROLE AND EXPECTATIONS
+
+You are acting as a senior software architect, Java engineer, backend engineer, cybersecurity engineer, UI/UX designer, and software quality assurance specialist.
+
+Your assignment is to design and implement a complete cloud configuration management ecosystem for the Anubis Minecraft Java Edition client.
+
+This is NOT a basic configuration uploader.
+
+This is intended to become a major Anubis client feature with its own account infrastructure, configuration management system, cloud synchronization engine, profile management system, configuration sharing ecosystem, version control, backup system, and administrative infrastructure.
+
+Think of this as a miniature cloud platform integrated directly into a Minecraft client.
+
+You must prioritize:
+
+* Reliability
+* Security
+* Performance
+* Scalability
+* Maintainability
+* User experience
+* Modular architecture
+* Long-term extensibility
+
+Do not generate a superficial implementation.
+
+Do not generate a collection of disconnected example classes.
+
+Do not create buttons that simulate functionality.
+
+Every implemented feature must have actual working logic behind it.
+
+⸻
+
+1. INITIAL CODEBASE INVESTIGATION
+
+Before writing code, thoroughly inspect the entire existing Anubis client repository.
+
+Determine:
+
+1. Minecraft version.
+2. Java version.
+3. Fabric, Forge, NeoForge, or other mod loader.
+4. Existing module framework.
+5. Existing configuration manager.
+6. Existing JSON serialization library.
+7. Existing networking architecture.
+8. Existing GUI framework.
+9. Existing HUD implementation.
+10. Existing account management system.
+11. Existing event bus.
+12. Existing command framework.
+13. Existing logging implementation.
+14. Existing dependency management.
+15. Existing configuration storage locations.
+
+Identify the architecture and integration points.
+
+Do not assume that the client uses a particular framework.
+
+Do not replace existing systems unnecessarily.
+
+Produce a short architectural assessment before implementation.
+
+If the repository already contains a cloud or networking implementation, evaluate whether it can be extended.
+
+Avoid duplicate systems.
+
+⸻
+
+2. SYSTEM ARCHITECTURE
+
+Design Anubis Cloud as a modular infrastructure system.
+
+Separate the implementation into logical components.
+
+Suggested architecture:
+
+ANUBIS CLOUD
+│
+├── Authentication Engine
+│
+├── Account Manager
+│
+├── Cloud API Client
+│
+├── Configuration Manager
+│
+├── Synchronization Engine
+│
+├── Profile Manager
+│
+├── Backup Manager
+│
+├── Version Control
+│
+├── Sharing System
+│
+├── Conflict Resolution
+│
+├── Local Cache
+│
+├── Notification Manager
+│
+├── Cloud Dashboard
+│
+├── Settings Interface
+│
+└── Diagnostics System
+
+The backend should independently contain:
+
+ANUBIS CLOUD BACKEND
+│
+├── Authentication API
+├── User API
+├── Configuration API
+├── Profile API
+├── Sharing API
+├── Version API
+├── Synchronization API
+├── Storage Service
+├── Database Layer
+├── Permission System
+├── Rate Limiting
+├── Audit Logging
+└── Administrative API
+
+Use clean separation between frontend, networking, storage, and business logic.
+
+⸻
+
+3. ANUBIS ACCOUNT INFRASTRUCTURE
+
+Create a complete account integration system.
+
+Features:
+
+* Account registration
+* Account login
+* Account logout
+* Session management
+* Account verification
+* Password recovery
+* Username management
+* Account profile
+* Account settings
+* Session expiration
+* Device management
+* Connected device list
+* Revoke device sessions
+* Account deletion workflow
+
+Account dashboard should display:
+
+* Username
+* Account identifier
+* Registration date
+* Last login
+* Connected devices
+* Cloud storage usage
+* Total saved configurations
+* Account status
+
+Security requirements:
+
+* Never store passwords in plaintext.
+* Use established authentication protocols.
+* Use secure password hashing on the backend.
+* Use short-lived access tokens.
+* Use refresh-token rotation.
+* Use HTTPS.
+* Never hardcode private API credentials.
+* Never expose administrative credentials to the client.
+* Validate all authorization server-side.
+
+Support a persistent login option using secure platform-appropriate storage.
+
+⸻
+
+4. CLOUD CONFIGURATION ENGINE
+
+Build a complete configuration serialization and storage system.
+
+The system must understand the existing Anubis configuration architecture.
+
+It must support:
+
+* Module enable states
+* Module disable states
+* Module settings
+* Numeric values
+* Boolean values
+* Enumerated settings
+* String settings
+* Color settings
+* Keybinds
+* HUD positions
+* HUD scales
+* HUD visibility
+* GUI preferences
+* Theme settings
+* Client preferences
+* Custom module configuration data
+
+Create a standardized configuration format.
+
+Example structure:
+
+{
+“format”: “anubis-cloud”,
+“schemaVersion”: 1,
+“metadata”: {
+“name”: “Donut SMP”,
+“description”: “Main gameplay configuration”,
+“createdAt”: “ISO-8601”,
+“updatedAt”: “ISO-8601”
+},
+“client”: {
+“version”: “CLIENT_VERSION”,
+“minecraftVersion”: “MINECRAFT_VERSION”
+},
+“modules”: {},
+“keybinds”: {},
+“hud”: {},
+“interface”: {},
+“preferences”: {}
+}
+
+The actual schema must be adapted to the existing configuration system.
+
+Implement:
+
+* Configuration serialization
+* Configuration deserialization
+* Configuration validation
+* Schema migration
+* Configuration compression
+* Configuration integrity checks
+* Configuration metadata extraction
+* Configuration previews
+
+Support compatibility checks between client versions.
+
+Do not silently discard unknown configuration fields.
+
+Preserve user settings whenever possible.
+
+⸻
+
+5. ADVANCED CLOUD SYNCHRONIZATION ENGINE
+
+This is one of the most important components.
+
+Build an intelligent synchronization engine.
+
+Synchronization modes:
+
+Manual Sync
+
+Users manually upload or download configurations.
+
+Automatic Sync
+
+Automatically synchronize configuration changes.
+
+Startup Sync
+
+Check cloud configuration state during client startup.
+
+Shutdown Backup
+
+Safely save local configuration state before shutdown.
+
+Profile Sync
+
+Synchronize the currently selected profile.
+
+Selective Sync
+
+Allow users to select which configuration categories synchronize.
+
+Background Sync
+
+Perform network operations asynchronously.
+
+Implement a synchronization state machine.
+
+Possible states:
+
+* IDLE
+* CHECKING
+* UPLOADING
+* DOWNLOADING
+* VALIDATING
+* MERGING
+* CONFLICT
+* SUCCESS
+* FAILED
+* OFFLINE
+
+Include:
+
+* Progress tracking
+* Retry handling
+* Network timeout handling
+* Exponential backoff
+* Request cancellation
+* Duplicate request prevention
+* Synchronization queue
+* Local pending changes
+* Cloud revision tracking
+* Last successful sync timestamp
+
+Use checksums or hashes to detect whether configurations have actually changed.
+
+Do not upload unchanged configurations unnecessarily.
+
+Do not block the Minecraft render or game thread.
+
+⸻
+
+6. ADVANCED CONFLICT RESOLUTION
+
+Implement a robust conflict resolution engine.
+
+A conflict occurs when the local configuration and cloud configuration have both changed since the last successful synchronization.
+
+Detect conflicts using:
+
+* Revision identifiers
+* Modification timestamps
+* Content hashes
+* Previous synchronization state
+
+Provide three primary actions:
+
+1. Keep Local
+2. Keep Cloud
+3. Compare and Merge
+
+The comparison interface should identify:
+
+* Changed modules
+* Changed settings
+* Changed keybinds
+* Changed HUD positions
+* Changed interface settings
+* Deleted settings
+* Newly created settings
+
+Where safe, allow users to merge individual settings.
+
+Never silently overwrite newer user data.
+
+Before destructive operations, automatically create a local backup.
+
+⸻
+
+7. MULTI-PROFILE MANAGEMENT
+
+Build an advanced configuration profile manager.
+
+Users can create unlimited profiles within applicable account storage limits.
+
+Example profiles:
+
+* Donut SMP
+* Crystal PvP
+* Survival
+* Anarchy
+* Performance
+* Recording
+* Custom
+
+Each profile must contain:
+
+* Unique identifier
+* Profile name
+* Description
+* Creation timestamp
+* Modification timestamp
+* Version number
+* Configuration checksum
+* Storage size
+* Active status
+* Synchronization status
+* Minecraft version compatibility
+
+Actions:
+
+* Create
+* Delete
+* Rename
+* Duplicate
+* Export
+* Import
+* Upload
+* Download
+* Archive
+* Restore
+* Set active
+* Pin favorite
+
+Support profile search, filtering, and sorting.
+
+Profile switching should not require a Minecraft restart whenever the existing client architecture permits safe live configuration updates.
+
+⸻
+
+8. CONFIGURATION SHARING ECOSYSTEM
+
+Build a complete configuration sharing platform.
+
+Each configuration can optionally be published using a unique sharing code.
+
+Example:
+
+ANUBIS-7X92KQ
+
+Sharing features:
+
+* Generate sharing code
+* Import using sharing code
+* Copy code
+* Revoke code
+* Expiration settings
+* Download limits
+* Public/private configuration status
+* Configuration preview
+* Configuration metadata
+* Sharing permissions
+
+Add optional sharing URLs through the backend.
+
+Implement server-side permission verification.
+
+Sharing must never expose private account information.
+
+Imported configurations must be treated as untrusted data.
+
+Never execute arbitrary code from imported configurations.
+
+⸻
+
+9. VERSION CONTROL SYSTEM
+
+Create an internal version history system for configurations.
+
+Whenever a configuration is updated, create a recoverable revision.
+
+Store:
+
+* Revision identifier
+* Configuration identifier
+* Revision number
+* Timestamp
+* Content hash
+* Change summary
+* Author identifier
+* Previous revision reference
+
+Features:
+
+* Browse revision history
+* Preview revisions
+* Compare revisions
+* Restore revisions
+* Delete eligible revisions
+* Display modification information
+
+Create a visual configuration comparison interface.
+
+Use meaningful change summaries.
+
+Example:
+
+Configuration updated
+
+Changed:
+
+* HUD scale
+* Target HUD position
+* Module enabled state
+* GUI accent color
+
+Do not rely exclusively on timestamps to determine revision ordering.
+
+⸻
+
+10. AUTOMATIC BACKUP SYSTEM
+
+Implement automatic local and cloud backups.
+
+Features:
+
+* Automatic local backups
+* Optional cloud backups
+* Backup scheduling
+* Backup retention limits
+* Backup restoration
+* Backup verification
+* Backup metadata
+* Backup cleanup
+
+Before major configuration changes, generate a recovery point.
+
+Provide configurable retention policies.
+
+Ensure backups do not grow indefinitely.
+
+⸻
+
+11. ADVANCED CLOUD DASHBOARD
+
+Create a visually impressive Anubis Cloud dashboard.
+
+The interface must match the Anubis visual identity.
+
+Design direction:
+
+* Dark Egyptian-inspired interface
+* Black and charcoal surfaces
+* Purple accent colors
+* Gold highlights
+* Subtle gradients
+* Smooth transitions
+* Clean typography
+* Premium visual hierarchy
+* Subtle Egyptian-inspired geometric details
+
+Avoid excessive decoration.
+
+The interface should feel sophisticated and professional.
+
+Dashboard components:
+
+Account Card
+
+Display account information and connection state.
+
+Storage Card
+
+Display cloud storage usage.
+
+Active Profile Card
+
+Display the currently active configuration.
+
+Synchronization Card
+
+Display current sync activity.
+
+Recent Activity
+
+Display recent uploads, downloads, imports, and restorations.
+
+Profile Browser
+
+Display saved configurations.
+
+Quick Actions
+
+Include upload, download, create profile, import, and export.
+
+Notifications
+
+Display synchronization events and warnings.
+
+⸻
+
+12. STORAGE MANAGEMENT
+
+Create a storage management interface.
+
+Display:
+
+* Total storage capacity
+* Used storage
+* Available storage
+* Configuration count
+* Backup count
+* Revision count
+* Individual configuration sizes
+
+Include storage visualization.
+
+Implement storage limits server-side.
+
+Warn users before storage limits are reached.
+
+Provide cleanup options for obsolete backups and revisions.
+
+Never delete active configurations automatically.
+
+⸻
+
+13. DEVICE SYNCHRONIZATION
+
+Allow users to access the same account across multiple Minecraft installations.
+
+Track registered devices.
+
+Display:
+
+* Device name
+* Minecraft version
+* Client version
+* Last synchronization
+* Last active timestamp
+* Device identifier
+
+Allow users to revoke device sessions.
+
+Do not expose sensitive device identifiers unnecessarily.
+
+Support configuration synchronization across different computers.
+
+Handle different Minecraft and client versions gracefully.
+
+⸻
+
+14. OFFLINE-FIRST ARCHITECTURE
+
+Anubis Cloud must remain usable without internet access.
+
+Implement:
+
+* Local configuration storage
+* Local configuration cache
+* Offline profile switching
+* Offline backups
+* Pending synchronization queue
+* Connection state detection
+* Automatic reconnection
+* Safe synchronization recovery
+
+When the user reconnects:
+
+1. Detect network availability.
+2. Validate authentication.
+3. Check pending operations.
+4. Compare local and cloud revisions.
+5. Detect conflicts.
+6. Synchronize safely.
+7. Update local synchronization metadata.
+
+Never delete unsynchronized local data.
+
+⸻
+
+15. CLOUD NOTIFICATION SYSTEM
+
+Create an integrated notification system.
+
+Notification examples:
+
+* Configuration uploaded successfully.
+* Configuration downloaded successfully.
+* Cloud synchronization completed.
+* Configuration conflict detected.
+* Backup created successfully.
+* New configuration version available.
+* Storage limit approaching.
+* Authentication expired.
+* Network unavailable.
+* Sharing code generated.
+
+Notifications should support:
+
+* Different severity levels
+* Custom display duration
+* Optional sound
+* Persistent notifications
+* Notification history
+* Dismiss actions
+
+Integrate with the existing Anubis notification framework.
+
+⸻
+
+16. ADVANCED SEARCH AND FILTERING
+
+Create a searchable configuration library.
+
+Support:
+
+* Search by profile name
+* Search by description
+* Search by author
+* Filter by creation date
+* Filter by modification date
+* Filter by compatibility
+* Filter by synchronization status
+* Sort alphabetically
+* Sort by recently modified
+* Sort by recently created
+* Sort by storage size
+
+Implement efficient pagination if the number of configurations becomes large.
+
+⸻
+
+17. CLOUD API DESIGN
+
+If no backend currently exists, design and implement a separate backend service.
+
+Do not pretend cloud storage exists when no real server has been configured.
+
+Create a documented REST API.
+
+Suggested endpoints:
+
+AUTHENTICATION
+
+* POST /api/v1/auth/register
+* POST /api/v1/auth/login
+* POST /api/v1/auth/refresh
+* POST /api/v1/auth/logout
+
+ACCOUNT
+
+* GET /api/v1/account
+* PATCH /api/v1/account
+* GET /api/v1/account/devices
+* DELETE /api/v1/account/devices/{id}
+
+CONFIGURATIONS
+
+* GET /api/v1/configurations
+* POST /api/v1/configurations
+* GET /api/v1/configurations/{id}
+* PUT /api/v1/configurations/{id}
+* DELETE /api/v1/configurations/{id}
+
+PROFILES
+
+* GET /api/v1/profiles
+* POST /api/v1/profiles
+* PATCH /api/v1/profiles/{id}
+* DELETE /api/v1/profiles/{id}
+
+SHARING
+
+* POST /api/v1/shares
+* GET /api/v1/shares/{code}
+* DELETE /api/v1/shares/{id}
+
+VERSIONS
+
+* GET /api/v1/configurations/{id}/versions
+* GET /api/v1/configurations/{id}/versions/{version}
+* POST /api/v1/configurations/{id}/restore/{version}
+
+BACKUPS
+
+* GET /api/v1/backups
+* POST /api/v1/backups
+* POST /api/v1/backups/{id}/restore
+* DELETE /api/v1/backups/{id}
+
+SYNCHRONIZATION
+
+* POST /api/v1/sync/check
+* POST /api/v1/sync/commit
+* GET /api/v1/sync/status
+
+These endpoints are architectural suggestions.
+
+Adapt them to the actual implementation.
+
+Use consistent API response formats.
+
+Include meaningful HTTP status codes.
+
+Document authentication requirements and request limits.
+
+⸻
+
+18. DATABASE ARCHITECTURE
+
+Design a scalable database schema.
+
+Potential entities:
+
+* Users
+* Sessions
+* Devices
+* Configurations
+* Profiles
+* ConfigurationVersions
+* Backups
+* SharingTokens
+* SynchronizationRecords
+* AuditEvents
+
+Use relational constraints where appropriate.
+
+Create indexes for common lookup operations.
+
+Ensure users can only access their own private data.
+
+Implement transactional updates where necessary.
+
+Do not store large configuration blobs inefficiently in relational tables if object storage is more appropriate.
+
+Separate metadata storage from binary or compressed configuration storage where beneficial.
+
+⸻
+
+19. SECURITY AND THREAT MODEL
+
+Perform a security review of the complete system.
+
+Consider:
+
+* Unauthorized configuration access
+* Account takeover
+* Token theft
+* Sharing code abuse
+* Malicious imported configuration data
+* Oversized upload attacks
+* Request flooding
+* Database injection
+* Path traversal
+* Cross-account access
+* Corrupted configuration payloads
+* Replay attacks
+
+Implement appropriate protections.
+
+Additional requirements:
+
+* HTTPS
+* Strict authorization checks
+* Secure token handling
+* Server-side validation
+* Request rate limiting
+* Upload size limits
+* Safe deserialization
+* Database parameterization
+* Security-focused logging
+* Secret management
+* Dependency auditing
+
+Never place server secrets in the Minecraft client.
+
+Never trust client-side permission checks.
+
+⸻
+
+20. PERFORMANCE REQUIREMENTS
+
+The cloud system must not noticeably degrade Minecraft performance.
+
+Requirements:
+
+* No synchronous network requests on the main thread.
+* No unnecessary disk writes.
+* No unnecessary cloud uploads.
+* Efficient configuration serialization.
+* Efficient caching.
+* Bounded background task queues.
+* Proper executor management.
+* Proper resource cleanup.
+* Avoid memory leaks.
+* Avoid excessive polling.
+
+Use background workers and asynchronous operations.
+
+The GUI must remain responsive during uploads and downloads.
+
+⸻
+
+21. ADVANCED USER SETTINGS
+
+Add a dedicated Cloud Settings page.
+
+Settings should include:
+
+* Enable Cloud Sync
+* Automatic Startup Sync
+* Automatic Change Detection
+* Automatic Backup
+* Sync Frequency
+* Offline Mode
+* Sync Notifications
+* Backup Retention
+* Configuration Compression
+* Conflict Resolution Preference
+* Selective Synchronization
+* Network Timeout
+* Maximum Retry Attempts
+
+Every setting must actually control the corresponding behavior.
+
+Provide sensible defaults.
+
+⸻
+
+22. DEVELOPER AND DIAGNOSTICS MODE
+
+Create an optional diagnostics panel.
+
+Display:
+
+* API connectivity
+* Backend response time
+* Authentication state
+* Current synchronization state
+* Last successful synchronization
+* Pending synchronization tasks
+* Local cache status
+* Configuration schema version
+* Recent non-sensitive errors
+
+Allow users to export diagnostic reports.
+
+Never include passwords, tokens, private credentials, or sensitive configuration information in diagnostic reports.
+
+⸻
+
+23. ADMINISTRATIVE INFRASTRUCTURE
+
+If an administrative backend is implemented, create a separate protected administrative interface.
+
+Possible capabilities:
+
+* View service health
+* Monitor API requests
+* View aggregate storage usage
+* Manage service limits
+* View error statistics
+* Manage abusive sharing codes
+* Review security events
+* Monitor synchronization failures
+
+Administrative access must be separate from ordinary client authentication.
+
+Never embed administrator credentials in the client.
+
+Enforce role-based access control on the backend.
+
+⸻
+
+24. TESTING REQUIREMENTS
+
+Create automated tests.
+
+Test the following:
+
+CONFIGURATION
+
+* Serialization
+* Deserialization
+* Schema migration
+* Corrupted data handling
+* Compatibility checks
+
+SYNCHRONIZATION
+
+* Upload
+* Download
+* Unchanged configuration detection
+* Offline synchronization
+* Retry behavior
+* Conflict detection
+* Conflict resolution
+
+AUTHENTICATION
+
+* Registration
+* Login
+* Token refresh
+* Logout
+* Expired sessions
+* Unauthorized requests
+
+SHARING
+
+* Code generation
+* Code redemption
+* Invalid codes
+* Expired codes
+* Revoked codes
+* Permission checks
+
+BACKUPS
+
+* Backup creation
+* Backup restoration
+* Backup validation
+* Retention cleanup
+
+PERFORMANCE
+
+* Large configurations
+* Multiple profiles
+* Concurrent background operations
+* GUI responsiveness
+
+SECURITY
+
+* Cross-account access attempts
+* Invalid payloads
+* Oversized requests
+* Malformed JSON
+* Unauthorized API requests
+
+⸻
+
+25. IMPLEMENTATION RULES
+
+These rules are mandatory.
+
+1. Inspect the existing source before changing anything.
+2. Preserve existing Anubis functionality.
+3. Integrate with existing module architecture.
+4. Do not unnecessarily rewrite the client.
+5. Do not introduce incompatible dependencies.
+6. Do not create fake functionality.
+7. Do not use hardcoded sample data as production cloud data.
+8. Do not silently ignore errors.
+9. Do not block the Minecraft main thread.
+10. Do not expose private credentials.
+11. Do not delete existing configurations.
+12. Back up important files before migrations.
+13. Document all new dependencies.
+14. Write maintainable code.
+15. Use meaningful class and method names.
+16. Add comments for complex architecture.
+17. Keep frontend and backend responsibilities separate.
+18. Make every feature testable.
+19. Compile after implementation.
+20. Fix compilation errors before declaring completion.
+
+If a feature requires external infrastructure, implement the appropriate integration and document exactly what must be deployed.
+
+Do not claim that a feature works if it requires a backend that has not been deployed.
+
+⸻
+
+26. EXPECTED DELIVERABLES
+
+At completion, provide:
+
+Source Code
+
+All implemented Java classes, GUI components, networking components, and supporting files.
+
+Backend
+
+All required backend source code, database schema, migrations, and API definitions if the backend is part of the project.
+
+Documentation
+
+Architecture documentation, setup instructions, API documentation, and configuration schema documentation.
+
+Tests
+
+Automated tests and their results.
+
+Build
+
+Successful compilation results for the existing project.
+
+Integration Report
+
+A list of:
+
+* Files created
+* Files modified
+* Dependencies added
+* Existing systems integrated
+* New systems implemented
+* Backend deployment requirements
+* Remaining limitations
+
+⸻
+
+27. FINAL QUALITY STANDARD
+
+The finished Anubis Cloud system should feel like a first-class feature of a professionally developed Minecraft client.
+
+It should not feel like a random addon.
+
+It should have a cohesive interface, dependable synchronization, secure authentication, reliable configuration management, and a properly designed backend.
+
+The architecture should support future expansion without requiring a complete rewrite.
+
+Prioritize actual functionality over flashy visuals.
+
+Do not stop after producing an implementation plan.
+
+After the initial codebase investigation, proceed with implementation in logical phases.
+
+If context or output limits are reached, maintain a clear implementation checklist and resume from the last completed phase without duplicating or breaking previous work.
+
+FINAL OBJECTIVE: Build Anubis Cloud into a complete, secure, scalable configuration management ecosystem that allows Anubis users to manage their entire client configuration infrastructure across multiple devices.
